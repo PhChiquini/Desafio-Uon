@@ -1,0 +1,140 @@
+<div *ngIf="isModalShown" [config]="{ show: true, backdrop: 'static' }" (onHidden)="onHidden()" bsModal #autoShownModal="bs-modal"
+  class="modal fade" tabindex="-1" role="dialog" aria-labelledby="dialog-auto-name">
+  <div class="modal-dialog modal-md">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 id="dialog-auto-name" class="modal-title pull-left">Auto shown modal</h4>
+        <button type="button" class="close pull-right" aria-label="Close" (click)="hideModal()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="registerForm">
+          <div class="form-row">
+            <div class="form-group col-md-12">
+              <label>Nome</label>
+              <input type="text"
+                [ngClass]="{'is-invalid': registerForm.get('nome').errors && registerForm.get('nome').dirty}"
+                class="form-control" formControlName="nome" placeholder="Insira o Nome">
+              <div *ngIf="registerForm.get('nome').hasError('required')" class="invalid-feedback">
+                Nome é obrigatório.
+              </div>
+              <div *ngIf="registerForm.get('nome').hasError('minlength')" class="invalid-feedback">
+                Nome deve ter no mínimo 2 caracteres.
+              </div>
+              <div *ngIf="registerForm.get('nome').hasError('maxlength')" class="invalid-feedback">
+                Nome deve ter no máximo 50 caracteres.
+              </div>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group col-md-12">
+              <label>Endereço</label>
+              <input type="text"
+                [ngClass]="{'is-invalid': registerForm.get('endereco').errors && registerForm.get('endereco').dirty}"
+                class="form-control" formControlName="endereco" placeholder="Insira o Endereço">
+              <div *ngIf="registerForm.get('endereco').hasError('required')" class="invalid-feedback">
+                Endereço é obrigatório.
+              </div>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group col-md-6">
+              <label>Data de Nascimento</label>
+              <div class="input-group">
+                <input type="text" 
+                  #datepickerMDY="bsDatepicker"
+                  bsDatepicker
+                  [bsConfig]="{ dateInputFormat : 'DD/MM/YYYY' }" 
+                  [maxDate]="maxDate"
+                  [ngClass]="{'is-invalid': registerForm.get('dataNascimento').errors && registerForm.get('dataNascimento').touched}"
+                  class="form-control"
+                  formControlName="dataNascimento" placeholder="dd/mm/yyyy">
+                <div class="input-group-append">
+                  <button 
+                  [ngClass]="{'btn-outline-danger': registerForm.get('dataNascimento').errors && registerForm.get('dataNascimento').touched}" class="btn btn-outline-secondary" (click)="datepickerMDY.toggle()" [attr.aria-expanded]="datepickerMDY.isOpen" type="button"><i
+                      class="far fa-calendar-alt"></i></button>
+                </div>
+              </div>
+              <div *ngIf="registerForm.get('dataNascimento').hasError('required')" class="invalid-feedback">
+                Data de Nascimento é obrigatória.
+              </div>
+            </div>
+            <div class="form-group col-md-5">
+              <label>Telefone</label>
+              <input type="text" mask="(00) 00000-0000" [showMaskTyped]="true" [dropSpecialCharacters]="false"
+                [ngClass]="{'is-invalid': registerForm.get('telefone').errors && registerForm.get('telefone').dirty}"
+                class="form-control" formControlName="telefone" placeholder="" appMask="(99) 9999-99999">
+              <div *ngIf="registerForm.get('telefone').hasError('required')" class="invalid-feedback">
+                Telefone é obrigatório.
+              </div>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group col-md-8">
+              <label>Identificação (CPF ou Numero Fiscal)</label>
+              <input type="text"
+                [ngClass]="{'is-invalid': registerForm.get('identificacao').errors && registerForm.get('identificacao').dirty}"
+                class="form-control" formControlName="identificacao" placeholder="">
+              <div *ngIf="registerForm.get('identificacao').hasError('required')" class="invalid-feedback">
+                Identificação é obrigatória.
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer d-flex">
+          <button class="btn btn-secondary" (click)="hideModal()">
+            Fechar
+          </button>
+          <button class="btn btn-primary ml-auto" [disabled]="!registerForm.valid" (click)="saveRegistro(template)">
+            Salvar
+          </button>
+        </div>
+    </div>
+  </div>
+</div>
+
+<div class="row col-md mt-2">
+    <button routerLink="/inicio" class="btn btn-outline-primary mr-3"><i class="fas fa-home"></i> Início</button>
+    <button routerLink="/valores" class="btn btn-outline-info"><i class="fas fa-arrow-left"></i> Voltar para os Valores</button>
+</div>
+
+<div class="card mt-3 p-3">
+  <div class="">
+    <h1 class="card-title">Desafio - Registros</h1>
+  </div>
+  <div class="row">
+    <div class="col-sm-12">
+      <div *ngIf="registros && registros.length" class="card">
+        <h5 class="card-header">
+          Registros Realizados
+        </h5>
+        <div class="div-table">
+          <table class="table table-fixed">
+            <thead class="thead text-center">
+              <tr>
+                <th>Nome</th>
+                <th>Endereço</th>
+                <th>Data de Nascimento</th>
+                <th>Telefone</th>
+                <th>Identificação</th>
+              </tr>
+            </thead>
+            <tbody class="text-center">
+              <tr *ngFor="let reg of registros | slice: (page-1) * pageSize : (page-1) * pageSize + pageSize">
+                <td>{{reg.nome }}</td>
+                <td>{{reg.endereco }}</td>
+                <td>{{reg.dataNascimento | DateTimeFormat}}</td>
+                <td>{{reg.telefone}}</td>
+                <td>{{reg.identificacao}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <ngb-pagination *ngIf="registros && registros.length > 4" [pageSize]="pageSize" [directionLinks]="registros.length > 1" [(page)]="page" [collectionSize]="registros.length"></ngb-pagination>
+    </div>
+    
+  </div>
+</div>

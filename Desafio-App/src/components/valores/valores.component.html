@@ -1,0 +1,96 @@
+<div class="card mt-3 p-3">
+  <div class="">
+    <h1 class="card-title">Desafio - Valores</h1>
+  </div>
+  <div class="row">
+    <div class="col-sm-3">
+      <div class="card flexbox-container">
+        <div class="card-body">
+          <h5 class="card-title">Valores</h5>
+          <div class="flexbox-container">
+            <form [formGroup]="formValores">
+              <div class="form-group">
+                <label class="col-form-label" for="valor1">Valor 1</label>
+                <input [ngClass]="{'is-invalid': formValores.get('valor1').errors && formValores.get('valor1').dirty}"
+                  class="form-control" type="number" name="valor1" formControlName="valor1">
+                <div *ngIf="formValores.get('valor1').hasError('required')" class="invalid-feedback">
+                  Insira um valor para continuar.
+                </div>
+                <div *ngIf="formValores.get('valor1').hasError('min')" class="invalid-feedback">
+                  O Valor não pode ser menor que -10000.
+                </div>
+                <div *ngIf="formValores.get('valor1').hasError('max')" class="invalid-feedback">
+                  O Valor não pode ser maior que 10000.
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-form-label" for="valor2">Valor 2</label>
+                <input [ngClass]="{'is-invalid': formValores.get('valor2').errors && formValores.get('valor2').dirty}"
+                  class="form-control" type="number" name="valor2" formControlName="valor2">
+                <div *ngIf="formValores.get('valor2').hasError('required')" class="invalid-feedback">
+                  Insira um valor para continuar.
+                </div>
+                <div *ngIf="formValores.get('valor2').hasError('min')" class="invalid-feedback">
+                  O Valor não pode ser menor que -10000.
+                </div>
+                <div *ngIf="formValores.get('valor2').hasError('max')" class="invalid-feedback">
+                  O Valor não pode ser maior que 10000.
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+        <div class="card-body align-self-md-center">
+          <h5 class="card-title">Operações</h5>
+          <div class="flexbox-container">
+            <button [disabled]="!formValores.valid" class="operacao mr-2 btn btn-outline-primary fas fa-plus"
+              placement="bottom" ngbTooltip="Adição" (click)="calcular('Adição')"></button>
+            <button [disabled]="!formValores.valid" class="operacao mr-2 btn btn-outline-primary fas fa-minus"
+              placement="bottom" ngbTooltip="Subtração" (click)="calcular('Subtração')"></button>
+            <button [disabled]="!formValores.valid" class="operacao mr-2 btn btn-outline-primary fas fa-times"
+              placement="bottom" ngbTooltip="Multiplicação" (click)="calcular('Multiplicação')"></button>
+            <button [disabled]="!formValores.valid" class="operacao btn btn-outline-primary fas fa-divide"
+              placement="bottom" ngbTooltip="Divisão" (click)="calcular('Divisão')"></button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-9">
+      <div *ngIf="valores && valores.length" class="card">
+        <h5 class="card-header">
+          Histórico
+        </h5>
+        <div class="div-table">
+          <table class="table table-fixed">
+            <thead class="thead text-center">
+              <tr>
+                <th>Data</th>
+                <th>Valor 1</th>
+                <th>Valor 2</th>
+                <th>Resultado</th>
+                <th>Operação</th>
+              </tr>
+            </thead>
+            <tbody class="text-center">
+              <tr *ngFor="let valor of valores | slice: (page-1) * pageSize : (page-1) * pageSize + pageSize">
+                <td>{{valor.dataLog | DateTimeFormat }}</td>
+                <td>{{valor.valor1}}</td>
+                <td>{{valor.valor2}}</td>
+                <td>{{valor.resultado}}</td>
+                <td>{{valor.operacao}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <ngb-pagination *ngIf="valores && valores.length > 4" [pageSize]="pageSize" [directionLinks]="valores.length > 1" [(page)]="page" [collectionSize]="valores.length"></ngb-pagination>
+    </div>
+    <div class="row offset-11 mt-2">
+      <div class="">
+        <button routerLink="/registro" class="btn btn-outline-danger"><i class="fas fa-sign-out-alt"></i> Sair</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+

@@ -1,0 +1,11 @@
+div.painel button {
+    margin: 0;
+    position: absolute;
+    top: 65%;
+    left: 50%;
+    margin-right: -50%;
+    transform: translate(-50%, -50%); 
+    width: 50%;
+    height: 50%;
+    font-size: 200%;
+}

@@ -1,0 +1,25 @@
+.operacao{
+    width: 3rem !important;
+}
+
+.flexbox-container {
+    display: inline-flex;
+    flex-wrap: nowrap;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+}
+
+table.table-fixed{
+    width: 100%;
+}
+
+.table-fixed tbody {
+    height: 70px;
+    overflow-y: auto;
+    width: 100%;
+}
+
+.div-table {
+    height: 17.5em;
+}
